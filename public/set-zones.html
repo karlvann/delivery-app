@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set Zone Configuration</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; cursor: pointer; }
+        .success { color: green; }
+        .info { background: #f0f0f0; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Zone Configuration Helper</h1>
+    
+    <button onclick="setDefaultZones()">Set Default Zones</button>
+    <button onclick="checkCurrentZones()">Check Current Zones</button>
+    <button onclick="testPostcode()">Test Postcode 2037</button>
+    <button onclick="clearAll()">Clear All Settings</button>
+    
+    <div id="output"></div>
+    
+    <script>
+        function setDefaultZones() {
+            const zonePostcodes = {
+                eastern: ['2000-2050', '2060-2108'],
+                western: ['2140-2200', '2745-2770'],
+                northern: ['2060-2090', '2099-2107'],
+                southern: ['2220-2234', '2500-2540']
+            };
+            
+            const zoneRecommendations = {
+                eastern: [1, 4],     // Monday, Thursday
+                western: [5],        // Friday
+                northern: [2, 3],    // Tuesday, Wednesday
+                southern: [1, 5]     // Monday, Friday
+            };
+            
+            localStorage.setItem('zonePostcodes', JSON.stringify(zonePostcodes));
+            localStorage.setItem('zoneRecommendations', JSON.stringify(zoneRecommendations));
+            
+            document.getElementById('output').innerHTML = `
+                <div class="success">✅ Default zones set successfully!</div>
+                <div class="info">
+                    <h3>Zone Postcodes:</h3>
+                    <pre>${JSON.stringify(zonePostcodes, null, 2)}</pre>
+                    <h3>Zone Delivery Days:</h3>
+                    <pre>${JSON.stringify(zoneRecommendations, null, 2)}</pre>
+                </div>
+            `;
+        }
+        
+        function checkCurrentZones() {
+            const zones = localStorage.getItem('zonePostcodes');
+            const recommendations = localStorage.getItem('zoneRecommendations');
+            
+            document.getElementById('output').innerHTML = `
+                <div class="info">
+                    <h3>Current Zone Postcodes:</h3>
+                    <pre>${zones ? JSON.stringify(JSON.parse(zones), null, 2) : 'Not set'}</pre>
+                    <h3>Current Zone Delivery Days:</h3>
+                    <pre>${recommendations ? JSON.stringify(JSON.parse(recommendations), null, 2) : 'Not set'}</pre>
+                </div>
+            `;
+        }
+        
+        function testPostcode() {
+            const zones = localStorage.getItem('zonePostcodes');
+            if (!zones) {
+                document.getElementById('output').innerHTML = '<div>No zones configured. Please set default zones first.</div>';
+                return;
+            }
+            
+            const zonePostcodes = JSON.parse(zones);
+            const postcode = '2037';
+            const postcodeNum = parseInt(postcode);
+            let foundZone = null;
+            
+            for (const [zone, ranges] of Object.entries(zonePostcodes)) {
+                for (const range of ranges) {
+                    if (range.includes('-')) {
+                        const [start, end] = range.split('-').map(Number);
+                        if (postcodeNum >= start && postcodeNum <= end) {
+                            foundZone = zone;
+                            break;
+                        }
+                    }
+                }
+                if (foundZone) break;
+            }
+            
+            document.getElementById('output').innerHTML = `
+                <div class="info">
+                    <h3>Testing Postcode 2037:</h3>
+                    <p>Numeric value: ${postcodeNum}</p>
+                    <p>Detected zone: <strong>${foundZone || 'not found'}</strong></p>
+                    ${foundZone === 'eastern' ? '<p class="success">✅ Correctly detected as Eastern zone!</p>' : '<p>❌ Should be Eastern zone!</p>'}
+                </div>
+            `;
+        }
+        
+        function clearAll() {
+            localStorage.removeItem('zonePostcodes');
+            localStorage.removeItem('zoneRecommendations');
+            document.getElementById('output').innerHTML = '<div class="success">✅ All settings cleared!</div>';
+        }
+        
+        // Check on load
+        window.onload = checkCurrentZones;
+    </script>
+</body>
+</html>

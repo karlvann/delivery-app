@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zone Test Console Commands</title>
+</head>
+<body style="font-family: monospace; padding: 20px; background: #1e1e1e; color: #0f0;">
+    <h1 style="color: #0f0;">Zone Detection Test Commands</h1>
+    <p style="color: #fff;">Open your browser console at http://localhost:5180 and run these commands:</p>
+    
+    <div style="background: #000; padding: 20px; border: 1px solid #0f0; margin: 20px 0;">
+        <h2 style="color: #0ff;">Step 1: Check if sydney-zones.json loaded</h2>
+        <pre style="color: #fff;">
+// Run this in console:
+fetch('/sydney-zones.json').then(r => r.json()).then(console.log)
+        </pre>
+    </div>
+
+    <div style="background: #000; padding: 20px; border: 1px solid #0f0; margin: 20px 0;">
+        <h2 style="color: #0ff;">Step 2: Test zone detection directly</h2>
+        <pre style="color: #fff;">
+// Run this in console:
+const testPostcode = '2000';
+console.log('🔥 Testing postcode:', testPostcode);
+
+// Check localStorage for zones
+const storedZones = localStorage.getItem('zonePostcodes');
+if (storedZones) {
+    const zones = JSON.parse(storedZones);
+    console.log('📦 Stored zones:', zones);
+    
+    // Check if 2000 is in eastern zone
+    if (zones.eastern && zones.eastern.includes(testPostcode)) {
+        console.log('✅ Postcode 2000 is in EASTERN zone!');
+    } else {
+        console.log('❌ Postcode 2000 NOT found in eastern zone');
+        console.log('Eastern postcodes:', zones.eastern);
+    }
+} else {
+    console.log('⚠️ No zones in localStorage');
+}
+        </pre>
+    </div>
+
+    <div style="background: #000; padding: 20px; border: 1px solid #0f0; margin: 20px 0;">
+        <h2 style="color: #0ff;">Step 3: Force zone detection</h2>
+        <pre style="color: #fff;">
+// Run this to manually set the address and trigger calculation:
+const addressInput = document.querySelector('input[placeholder*="delivery address"]');
+if (addressInput) {
+    // Clear and set new value
+    addressInput.value = '';
+    addressInput.focus();
+    
+    // Type the address character by character
+    const address = '123 George Street, Sydney NSW 2000';
+    let i = 0;
+    const typeInterval = setInterval(() => {
+        if (i < address.length) {
+            addressInput.value += address[i];
+            addressInput.dispatchEvent(new Event('input', { bubbles: true }));
+            i++;
+        } else {
+            clearInterval(typeInterval);
+            console.log('✅ Address entered, now select from dropdown');
+            
+            // Trigger the autocomplete
+            addressInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    }, 50);
+} else {
+    console.log('❌ Could not find address input field');
+}
+        </pre>
+    </div>
+
+    <div style="background: #000; padding: 20px; border: 1px solid #0f0; margin: 20px 0;">
+        <h2 style="color: #0ff;">Step 4: Check React state</h2>
+        <pre style="color: #fff;">
+// Find React component and check its state:
+const reactRoot = document.getElementById('__next');
+if (reactRoot && reactRoot._reactRootContainer) {
+    console.log('🔍 React root found, checking state...');
+    // This will show React DevTools info if available
+}
+
+// Alternative: Check all console logs
+console.log('📋 Enable verbose logging and try address again');
+        </pre>
+    </div>
+
+    <div style="background: #000; padding: 20px; border: 1px solid #0f0; margin: 20px 0;">
+        <h2 style="color: #0ff;">Expected Console Output</h2>
+        <pre style="color: #0f0;">
+When you enter "123 George Street, Sydney NSW 2000" you should see:
+
+🔥 ZONE DETECTION - Input postcode: 2000
+🔥 ZONE DETECTION - Found zone: eastern
+✅ Zone for 2000 from database: eastern
+📍 Zone detected: Eastern Suburbs & City
+        </pre>
+    </div>
+
+    <p style="color: #ff0; margin-top: 30px;">
+        <strong>RESTART COMMAND:</strong> If nothing works, kill the server and restart:
+    </p>
+    <pre style="background: #000; padding: 10px; border: 1px solid #ff0; color: #fff;">
+lsof -ti:5180 | xargs kill -9 && npm run dev
+    </pre>
+</body>
+</html>

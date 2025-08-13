@@ -1,0 +1,112 @@
+{
+  "eastern": {
+    "name": "Eastern Suburbs & City",
+    "postcodes": [
+      "2000", "2001", "2002", "2004", "2006", "2007", "2008", "2009", "2010", "2011",
+      "2015", "2016", "2017", "2018", "2021", "2022", "2023", "2024", "2025", "2026", 
+      "2027", "2028", "2029", "2030", "2031", "2032", "2034", "2035", "2036", "2037",
+      "2038", "2039", "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047",
+      "2048", "2049", "2050", "2052"
+    ],
+    "suburbs": [
+      "Sydney CBD", "The Rocks", "Darling Harbour", "Pyrmont", "Ultimo", "Surry Hills",
+      "Darlinghurst", "Kings Cross", "Potts Point", "Elizabeth Bay", "Rushcutters Bay",
+      "Paddington", "Woollahra", "Edgecliff", "Double Bay", "Rose Bay", "Vaucluse",
+      "Watsons Bay", "Bondi", "Bondi Beach", "Tamarama", "Bronte", "Clovelly",
+      "Coogee", "Randwick", "Kensington", "Kingsford", "Maroubra", "Malabar",
+      "Glebe", "Forest Lodge", "Annandale", "Leichhardt", "Lilyfield", "Rozelle",
+      "Balmain", "Birchgrove", "Newtown", "Erskineville", "Alexandria", "Redfern",
+      "Waterloo", "Zetland", "Beaconsfield", "Rosebery", "Camperdown"
+    ]
+  },
+  "northern": {
+    "name": "North Shore & Northern Beaches",
+    "postcodes": [
+      "2060", "2061", "2062", "2063", "2064", "2065", "2066", "2067", "2068", "2069",
+      "2070", "2071", "2072", "2073", "2074", "2075", "2076", "2077", "2079", "2080",
+      "2081", "2082", "2083", "2084", "2085", "2086", "2087", "2088", "2089", "2090",
+      "2092", "2093", "2094", "2095", "2096", "2097", "2099", "2100", "2101", "2102",
+      "2103", "2104", "2105", "2106", "2107", "2108", "2110", "2111", "2112", "2113",
+      "2114", "2115", "2116", "2117", "2118", "2119", "2120", "2121", "2122", "2123",
+      "2124", "2125", "2126"
+    ],
+    "suburbs": [
+      "North Sydney", "Milsons Point", "Kirribilli", "Neutral Bay", "Cremorne",
+      "Mosman", "Chatswood", "Artarmon", "Lane Cove", "St Leonards", "Crows Nest",
+      "Willoughby", "Castle Cove", "Roseville", "Lindfield", "Killara", "Gordon",
+      "Pymble", "Turramurra", "Wahroonga", "Warrawee", "St Ives", "Belrose",
+      "Forestville", "Frenchs Forest", "Davidson", "Terrey Hills", "Duffys Forest",
+      "Manly", "Seaforth", "Balgowlah", "Clontarf", "Fairlight", "Queenscliff",
+      "Freshwater", "Curl Curl", "Dee Why", "Brookvale", "Narraweena", "Beacon Hill",
+      "Cromer", "Collaroy", "Wheeler Heights", "Narrabeen", "Elanora Heights",
+      "Ingleside", "Mona Vale", "Warriewood", "Newport", "Bilgola", "Avalon",
+      "Whale Beach", "Palm Beach", "Ryde", "Gladesville", "Hunters Hill"
+    ]
+  },
+  "western": {
+    "name": "Western Sydney",
+    "postcodes": [
+      "2140", "2141", "2142", "2143", "2144", "2145", "2146", "2147", "2148", "2150",
+      "2151", "2152", "2153", "2154", "2155", "2156", "2157", "2158", "2159", "2160",
+      "2161", "2162", "2163", "2164", "2165", "2166", "2167", "2168", "2170", "2171",
+      "2172", "2173", "2174", "2175", "2176", "2177", "2178", "2179", "2180", "2181",
+      "2182", "2183", "2184", "2185", "2186", "2187", "2188", "2189", "2745", "2746",
+      "2747", "2748", "2749", "2750", "2751", "2752", "2753", "2754", "2755", "2756",
+      "2757", "2758", "2759", "2760", "2761", "2762", "2763", "2764", "2765", "2766",
+      "2767", "2768", "2769", "2770"
+    ],
+    "suburbs": [
+      "Parramatta", "Westmead", "Harris Park", "Granville", "Merrylands", "Guildford",
+      "Auburn", "Lidcombe", "Silverwater", "Homebush", "Strathfield", "Burwood",
+      "Concord", "Rhodes", "Wentworthville", "Pendle Hill", "Toongabbie", "Seven Hills",
+      "Blacktown", "Marayong", "Quakers Hill", "Schofields", "Riverstone", "Marsden Park",
+      "Mount Druitt", "Rooty Hill", "Doonside", "Woodcroft", "Glenwood", "Bella Vista",
+      "Kellyville", "Rouse Hill", "Box Hill", "Glenorie", "Kenthurst", "Glendenning",
+      "Plumpton", "Oakhurst", "Hassall Grove", "Dean Park", "Glenmore Park", "Penrith",
+      "Kingswood", "Cambridge Park", "Werrington", "St Marys", "St Clair", "Erskine Park",
+      "Kemps Creek", "Mount Vernon", "Horsley Park", "Eastern Creek", "Minchinbury",
+      "Glenwood", "Parklea", "Stanhope Gardens", "The Ponds", "Kellyville Ridge"
+    ]
+  },
+  "southern": {
+    "name": "Southern Sydney & Sutherland Shire",
+    "postcodes": [
+      "2190", "2191", "2192", "2193", "2194", "2195", "2196", "2197", "2198", "2199",
+      "2200", "2207", "2208", "2209", "2210", "2211", "2212", "2213", "2214", "2215",
+      "2216", "2217", "2218", "2219", "2220", "2221", "2222", "2223", "2224", "2225",
+      "2226", "2227", "2228", "2229", "2230", "2231", "2232", "2233", "2234", "2555",
+      "2556", "2557", "2558", "2559", "2560", "2563", "2564", "2565", "2566", "2567",
+      "2568", "2569", "2570", "2571", "2572", "2573", "2574"
+    ],
+    "suburbs": [
+      "Bankstown", "Yagoona", "Birrong", "Regents Park", "Potts Hill", "Sefton",
+      "Chester Hill", "Villawood", "Bass Hill", "Georges Hall", "Condell Park",
+      "Revesby", "Padstow", "Panania", "East Hills", "Milperra", "Picnic Point",
+      "Punchbowl", "Lakemba", "Wiley Park", "Roselands", "Narwee", "Beverly Hills",
+      "Kingsgrove", "Bardwell Park", "Bexley", "Rockdale", "Kogarah", "Carlton",
+      "Allawah", "Hurstville", "Penshurst", "Mortdale", "Oatley", "Como", "Jannali",
+      "Sutherland", "Kirrawee", "Gymea", "Miranda", "Caringbah", "Taren Point",
+      "Sylvania", "Kangaroo Point", "Sans Souci", "Ramsgate", "Dolls Point",
+      "Sandringham", "Botany", "Mascot", "Pagewood", "Kurnell", "Cronulla",
+      "Woolooware", "Burraneer", "Bundeena", "Maianbar", "Engadine", "Heathcote",
+      "Waterfall", "Campbelltown", "Ingleburn", "Macquarie Fields", "Minto",
+      "Leumeah", "Camden", "Narellan", "Gregory Hills", "Oran Park"
+    ]
+  },
+  "innerwest": {
+    "name": "Inner West",
+    "postcodes": [
+      "2127", "2128", "2129", "2130", "2131", "2132", "2133", "2134", "2135", "2136", 
+      "2137", "2138", "2139", "2140", "2141", "2201", "2202", "2203", "2204", "2205", 
+      "2206"
+    ],
+    "suburbs": [
+      "Summer Hill", "Ashfield", "Haberfield", "Leichhardt", "Lilyfield", "Rozelle",
+      "Five Dock", "Abbotsford", "Chiswick", "Russell Lea", "Rodd Point", "Canada Bay",
+      "Concord", "Concord West", "North Strathfield", "Strathfield", "Burwood",
+      "Burwood Heights", "Enfield", "Croydon", "Croydon Park", "Ashbury", "Canterbury",
+      "Campsie", "Belmore", "Belfield", "Dulwich Hill", "Marrickville", "Petersham",
+      "Stanmore", "Enmore", "Tempe", "Sydenham", "St Peters"
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zone Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Zone Lookup Test</h1>
+    
+    <input type="text" id="suburb" placeholder="Enter suburb (e.g., Bankstown)" />
+    <button onclick="testZone()">Test Zone</button>
+    
+    <div id="result"></div>
+    
+    <h2>Known Suburbs:</h2>
+    <ul>
+        <li>Bankstown - Should be Southern</li>
+        <li>Bondi - Should be Eastern</li>
+        <li>Parramatta - Should be Western</li>
+        <li>Chatswood - Should be Northern</li>
+        <li>Newtown - Should be Eastern/Inner West</li>
+    </ul>
+
+    <script>
+        async function testZone() {
+            const suburb = document.getElementById('suburb').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!suburb) {
+                resultDiv.innerHTML = '<div class="error">Please enter a suburb</div>';
+                return;
+            }
+            
+            // Call the API endpoint to test zone lookup
+            try {
+                const response = await fetch(`/api/test-zone?suburb=${encodeURIComponent(suburb)}`);
+                const data = await response.json();
+                
+                if (data.zone) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h3>✅ Found!</h3>
+                            <p><strong>Suburb:</strong> ${suburb}</p>
+                            <p><strong>Zone:</strong> ${data.zone.name}</p>
+                            <p><strong>Zone Key:</strong> ${data.zone.key}</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h3>❌ Not Found</h3>
+                            <p><strong>Suburb:</strong> ${suburb}</p>
+                            <p>This suburb is not in any delivery zone</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h3>Error</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

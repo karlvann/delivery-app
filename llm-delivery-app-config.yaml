@@ -1,0 +1,445 @@
+# LLM Configuration for Ausbeds Delivery Calculator App
+# This YAML provides comprehensive instructions for building a delivery fee calculator
+
+app_metadata:
+  name: "Ausbeds Delivery Calculator"
+  version: "1.0.0"
+  purpose: "Calculate furniture delivery fees from Sydney, Brisbane, and Melbourne warehouses"
+  tech_stack:
+    frontend: "React/Next.js"
+    database: "SQLite"
+    apis: 
+      - "Google Maps API (Places, Distance Matrix, Maps)"
+    deployment: "Vercel or similar"
+
+# Core Business Information
+business_context:
+  company: "Ausbeds"
+  warehouses:
+    - city: "Sydney"
+      address: "Sydney Warehouse"
+      coordinates: 
+        lat: -33.8688
+        lng: 151.2093
+    - city: "Brisbane"
+      address: "Brisbane Warehouse"
+      coordinates:
+        lat: -27.4698
+        lng: 153.0251
+    - city: "Melbourne"
+      address: "Melbourne Warehouse"
+      coordinates:
+        lat: -37.8136
+        lng: 144.9631
+  
+  delivery_types:
+    local:
+      description: "Standard delivery within city boundaries"
+      max_distance_km: 110
+    corridor:
+      description: "Fixed-rate delivery between major cities"
+      routes:
+        - "Sydney-Brisbane"
+        - "Sydney-Melbourne"
+    two_person:
+      description: "Additional helper for heavy items and stairs"
+      available_cities: ["Sydney", "Melbourne"]
+      available_days: ["Tuesday", "Wednesday", "Thursday"]
+
+# Customer Journey Flow
+customer_flow:
+  step_1_address_input:
+    description: "Customer enters delivery address"
+    implementation:
+      - component: "AddressInput"
+      - features:
+          - "Google Places Autocomplete integration"
+          - "Real-time address suggestions"
+          - "Auto-extract postcode from selected address"
+          - "Clear button to reset"
+      - validation:
+          - "Must be valid Australian address"
+          - "Must include postcode"
+          - "Cannot be PO Box"
+    
+  step_2_smart_detection:
+    description: "System automatically detects delivery parameters"
+    logic_sequence:
+      1_extract_postcode:
+        - "Extract 4-digit postcode from address"
+        - "Regex pattern: \\b\\d{4}\\b"
+      
+      2_check_corridors:
+        - "Query corridor_postcodes table"
+        - "Check if postcode in Sydney-Brisbane corridor"
+        - "Check if postcode in Sydney-Melbourne corridor"
+        - "If found, set delivery_type = 'corridor'"
+      
+      3_detect_zone:
+        - "Query delivery_zones table for postcode"
+        - "Zones: eastern, western, northern, southern"
+        - "If not found, attempt intelligent detection via suburb name"
+        - "Store zone for delivery day recommendations"
+      
+      4_calculate_distance:
+        - "If not corridor, determine closest warehouse"
+        - "Use Google Distance Matrix API"
+        - "Get driving distance in kilometers"
+        - "Check if within 110km limit"
+  
+  step_3_assessment_questions:
+    description: "Conditional questions based on city"
+    conditions:
+      sydney_melbourne:
+        - stairs_question:
+            prompt: "Will delivery involve stairs?"
+            options:
+              - label: "Ground floor / Lift available"
+                value: "no_stairs"
+                icon: "🏠"
+              - label: "1-2 flights of stairs"
+                value: "few_stairs"
+                icon: "📶"
+              - label: "3+ flights of stairs"
+                value: "many_stairs"
+                icon: "🏗️"
+        
+        - strength_question:
+            prompt: "How would you rate your strength level?"
+            options:
+              - label: "Strong - I can handle heavy items"
+                value: 3
+              - label: "Average - I can manage with effort"
+                value: 2
+              - label: "Limited - I need assistance"
+                value: 1
+        
+        - two_person_recommendation:
+            logic: |
+              IF (stairs = 'many_stairs' OR stairs = 'few_stairs') 
+              AND strength <= 2
+              THEN strongly_recommend_two_person
+      
+      brisbane:
+        - "Skip assessment questions"
+        - "Proceed directly to day selection"
+  
+  step_4_delivery_options:
+    two_person_service:
+      display_conditions:
+        - "City is Sydney OR Melbourne"
+        - "NOT corridor delivery"
+        - "After assessment questions answered"
+      
+      recommendation_logic:
+        strong_recommendation:
+          - "Has stairs AND low strength"
+          - "Display: 'Recommended based on your answers'"
+          - "Highlight benefits"
+        
+        optional:
+          - "No stairs OR high strength"
+          - "Display as optional add-on"
+      
+      ui_component:
+        - "Checkbox with explanation"
+        - "Show price impact immediately (+$50 base)"
+        - "Explain available days (Tue/Wed/Thu only)"
+  
+  step_5_day_selection:
+    description: "Choose delivery day based on zone and service type"
+    data_source: "Admin-configured zone_availability table"
+    
+    logic:
+      standard_delivery:
+        - "Query zone_availability for customer's zone"
+        - "Get available weekdays for that zone"
+        - "Show next 10 business days that match"
+        - "Exclude weekends and public holidays"
+      
+      two_person_delivery:
+        - "Filter to only Tuesday, Wednesday, Thursday"
+        - "Must also match zone availability"
+        - "Show limited availability warning"
+    
+    ui_display:
+      - "Calendar widget or day picker"
+      - "Unavailable days grayed out"
+      - "Show reason for unavailability"
+      - "Display selected day prominently"
+  
+  step_6_final_summary:
+    description: "Display complete quote with all selections"
+    display_elements:
+      - delivery_address: "Formatted address"
+      - delivery_type: "Local/Corridor"
+      - distance: "X km from [City] warehouse"
+      - zone: "Delivery zone (if Sydney)"
+      - base_price: "Calculated delivery fee"
+      - two_person_fee: "If selected"
+      - total_price: "Final amount"
+      - delivery_day: "Selected day"
+      - assessment_summary:
+          - "Stairs: [answer]"
+          - "Strength: Level [X]"
+      - special_notes: "Any warnings or info"
+
+# Pricing Rules Engine
+pricing_rules:
+  local_delivery:
+    formula: |
+      distance_km = calculate_distance(warehouse, customer_address)
+      
+      if distance_km <= 15:
+        base_fee = 0  # First 15km free
+      else:
+        base_fee = (distance_km - 15) * 2  # $2 per km after 15km
+      
+      if distance_km > 110:
+        throw "Beyond delivery area - email sales@ausbeds.com.au"
+      
+      return base_fee
+  
+  corridor_delivery:
+    sydney_brisbane: 190  # Fixed price
+    sydney_melbourne: 190  # Fixed price
+  
+  two_person_service:
+    base_fee: 50
+    distance_formula: |
+      if distance_km > 15:
+        additional = (distance_km - 15) * 2.50  # $2.50 per km after 15km
+      else:
+        additional = 0
+      
+      total_two_person = 50 + additional
+      return total_two_person
+  
+  priority_logic: |
+    # Corridor pricing always overrides local delivery
+    if is_corridor_postcode:
+      use corridor_delivery price
+    else:
+      use local_delivery price
+    
+    # Two-person is always additional
+    if two_person_selected:
+      add two_person_service fee
+
+# Database Schema
+database:
+  type: "SQLite"
+  tables:
+    delivery_zones:
+      columns:
+        - id: "INTEGER PRIMARY KEY"
+        - postcode: "TEXT UNIQUE"
+        - zone: "TEXT"  # eastern, western, northern, southern
+        - suburb: "TEXT"
+        - created_at: "DATETIME DEFAULT CURRENT_TIMESTAMP"
+      indexes:
+        - "CREATE INDEX idx_postcode ON delivery_zones(postcode)"
+    
+    corridor_postcodes:
+      columns:
+        - id: "INTEGER PRIMARY KEY"
+        - postcode: "TEXT"
+        - corridor: "TEXT"  # 'brisbane' or 'melbourne'
+        - created_at: "DATETIME DEFAULT CURRENT_TIMESTAMP"
+      indexes:
+        - "CREATE UNIQUE INDEX idx_corridor_postcode ON corridor_postcodes(postcode, corridor)"
+    
+    zone_availability:
+      columns:
+        - id: "INTEGER PRIMARY KEY"
+        - zone: "TEXT"
+        - day_of_week: "INTEGER"  # 1=Monday, 5=Friday
+        - available: "BOOLEAN DEFAULT true"
+        - updated_at: "DATETIME DEFAULT CURRENT_TIMESTAMP"
+      indexes:
+        - "CREATE INDEX idx_zone_day ON zone_availability(zone, day_of_week)"
+    
+    delivery_quotes:
+      columns:
+        - id: "INTEGER PRIMARY KEY"
+        - address: "TEXT"
+        - postcode: "TEXT"
+        - zone: "TEXT"
+        - delivery_type: "TEXT"  # local, corridor
+        - distance_km: "REAL"
+        - base_price: "REAL"
+        - two_person_fee: "REAL"
+        - total_price: "REAL"
+        - selected_day: "TEXT"
+        - stairs_answer: "TEXT"
+        - strength_level: "INTEGER"
+        - created_at: "DATETIME DEFAULT CURRENT_TIMESTAMP"
+
+# Admin Interface
+admin_panel:
+  path: "/admin"
+  authentication: "Simple password protection"
+  
+  features:
+    zone_management:
+      description: "Google Sheets-style editable table"
+      capabilities:
+        - "View all zones and postcodes"
+        - "Add/remove postcodes from zones"
+        - "Bulk import via CSV"
+        - "Search and filter"
+      
+      ui_components:
+        - "Editable data grid"
+        - "Add row button"
+        - "Delete row button"
+        - "Save changes button"
+        - "Import CSV button"
+    
+    corridor_management:
+      description: "Manage corridor postcodes"
+      capabilities:
+        - "View Sydney-Brisbane corridor postcodes"
+        - "View Sydney-Melbourne corridor postcodes"
+        - "Add/remove postcodes"
+        - "Bulk operations"
+    
+    delivery_schedule:
+      description: "Configure which zones deliver on which days"
+      ui: "Grid with zones as rows, days as columns"
+      interaction: "Click cells to toggle availability"
+      example: |
+        Zone     | Mon | Tue | Wed | Thu | Fri
+        ---------|-----|-----|-----|-----|-----
+        Eastern  | ✓   | ✓   |     |     | ✓
+        Western  |     |     | ✓   | ✓   | 
+        Northern | ✓   |     | ✓   |     | ✓
+        Southern |     | ✓   |     | ✓   | ✓
+
+# Error Handling
+error_handling:
+  strategies:
+    address_not_found:
+      - "Show friendly error message"
+      - "Suggest checking spelling"
+      - "Provide manual postcode entry option"
+    
+    beyond_delivery_range:
+      primary: "Check distance from all three warehouses"
+      fallback: "If all > 110km, show 'Email sales@ausbeds.com.au for custom quote'"
+    
+    api_failures:
+      google_maps_api:
+        - "Retry 3 times with exponential backoff"
+        - "Fall back to postcode-based estimation"
+        - "Cache successful responses for 24 hours"
+    
+    corridor_detection_failure:
+      - "Default to local delivery calculation"
+      - "Log error for admin review"
+    
+    zone_not_found:
+      - "Allow delivery but don't show zone-specific days"
+      - "Show all available days instead"
+    
+    database_errors:
+      - "Fall back to hardcoded defaults"
+      - "Continue operation in degraded mode"
+      - "Alert admin via email"
+
+# API Integration
+apis:
+  google_maps:
+    required_services:
+      - "Places API (for autocomplete)"
+      - "Distance Matrix API (for distance calculation)"
+      - "Maps JavaScript API (for map display)"
+    
+    implementation:
+      autocomplete:
+        - "Restrict to country: 'AU'"
+        - "Types: ['address']"
+        - "Debounce requests (300ms)"
+      
+      distance_calculation:
+        - "Mode: 'driving'"
+        - "Avoid: 'tolls' (optional)"
+        - "Units: 'metric'"
+        - "Cache results for 24 hours"
+
+# UI/UX Guidelines
+ui_guidelines:
+  design_principles:
+    - "Clean, minimal interface"
+    - "Mobile-responsive"
+    - "Progressive disclosure (show options as needed)"
+    - "Clear visual hierarchy"
+    - "Instant feedback on selections"
+  
+  components:
+    - "Single-page application feel"
+    - "Smooth transitions between steps"
+    - "Loading states for all async operations"
+    - "Clear error messages"
+    - "Success confirmations"
+  
+  color_scheme:
+    primary: "#brand-primary"  # Ausbeds brand color
+    success: "#10b981"  # Green
+    warning: "#f59e0b"  # Amber
+    error: "#ef4444"    # Red
+    neutral: "#6b7280"  # Gray
+
+# Output Format
+final_output:
+  summary_window:
+    title: "Delivery Quote Summary"
+    sections:
+      - heading: "Delivery Details"
+        content:
+          - "Address: [full address]"
+          - "Delivery Type: [Local/Corridor]"
+          - "Distance: [X km from City warehouse]"
+          - "Zone: [zone name]"
+      
+      - heading: "Your Selections"
+        content:
+          - "Stairs: [answer]"
+          - "Strength Level: [1-3]"
+          - "Two-Person Service: [Yes/No]"
+          - "Delivery Day: [selected day]"
+      
+      - heading: "Pricing Breakdown"
+        content:
+          - "Base Delivery: $[amount]"
+          - "Two-Person Service: $[amount]"
+          - "Total: $[total]"
+    
+    actions:
+      - "Print Quote"
+      - "Email Quote"
+      - "Start New Quote"
+      - "Contact Sales"
+
+# Development Instructions
+development_notes:
+  setup:
+    - "Initialize Next.js project"
+    - "Set up SQLite database"
+    - "Configure Google Maps API"
+    - "Create required tables"
+    - "Seed initial zone data"
+  
+  testing:
+    - "Test with real Australian addresses"
+    - "Verify corridor detection"
+    - "Test edge cases (islands, remote areas)"
+    - "Validate pricing calculations"
+    - "Test two-person recommendations"
+  
+  deployment:
+    - "Set up environment variables"
+    - "Configure database connection"
+    - "Set up SSL certificate"
+    - "Configure domain"
+    - "Set up monitoring"

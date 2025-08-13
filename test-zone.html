@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zone Detection Test</title>
+    <script>
+        // Test the zone detection logic directly
+        const sydneyZones = {
+            "eastern": ["2000", "2010", "2011", "2017", "2018", "2019", "2021", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039", "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050", "2087", "2088", "2089", "2090", "2091", "2092", "2093", "2094", "2095", "2096", "2097", "2099", "2100", "2101", "2102", "2103", "2104", "2105", "2106", "2107", "2108", "2110", "2111", "2112", "2113", "2119", "2122", "2125", "2126", "2134", "2135", "2136", "2137", "2193", "2194", "2195", "2196", "2204", "2205", "2206", "2207", "2208", "2216", "2217", "2219", "2220", "2221", "2222", "2223", "2224", "2225", "2226", "2227", "2228", "2229", "2230", "2231", "2232", "2233"],
+            "western": ["2115", "2116", "2117", "2118", "2120", "2121", "2140", "2141", "2142", "2143", "2144", "2145", "2146", "2147", "2148", "2150", "2151", "2152", "2153", "2154", "2155", "2156", "2157", "2158", "2159", "2160", "2161", "2162", "2163", "2164", "2165", "2166", "2167", "2168", "2170", "2171", "2172", "2173", "2174", "2175", "2176", "2177", "2178", "2179", "2190", "2191", "2192", "2197", "2198", "2199", "2200", "2203", "2209", "2210", "2211", "2212", "2213", "2214", "2557", "2558", "2559", "2560", "2563", "2564", "2565", "2566", "2567", "2745", "2747", "2748", "2749", "2750", "2751", "2752", "2753", "2754", "2755", "2756", "2757", "2758", "2759", "2760", "2761", "2762", "2763", "2765", "2766", "2767", "2768", "2769", "2770", "2773", "2774", "2775", "2776", "2777", "2778"],
+            "northern": ["1630", "1635", "1639", "1640", "1660", "1670", "1680", "1685", "1710", "1715", "1730", "1750", "1755", "1765", "1790", "1800", "1805", "1810", "1815", "1825", "1835", "1850", "1851", "1860", "1871", "1875", "1880", "1885", "1890", "1891", "2015", "2016", "2060", "2061", "2062", "2063", "2064", "2065", "2066", "2067", "2068", "2069", "2070", "2071", "2072", "2073", "2074", "2075", "2076", "2077", "2079", "2080", "2081", "2082", "2083", "2084", "2085", "2086", "2114"],
+            "southern": ["1445", "1450", "1455", "1460", "1465", "1466", "1470", "1475", "1480", "1481", "1485", "1490", "1493", "1495", "1499", "2170", "2172", "2173", "2176", "2177", "2178", "2179", "2232", "2233", "2234", "2500", "2502", "2505", "2506", "2508", "2515", "2516", "2517", "2518", "2519", "2525", "2526", "2527", "2528", "2529", "2530", "2531", "2533", "2534", "2535", "2536", "2537", "2538", "2539", "2540", "2541", "2555", "2556", "2557", "2558", "2559", "2560", "2563", "2564", "2565", "2566", "2567", "2568", "2569", "2570", "2571", "2572", "2573", "2574", "2575", "2576", "2577", "2578", "2579", "2580"]
+        };
+
+        function detectZone(postcode) {
+            if (!postcode) return null;
+            
+            console.log('🔥 ZONE DETECTION - Input postcode:', postcode);
+            
+            for (const [zone, postcodes] of Object.entries(sydneyZones)) {
+                if (postcodes.includes(postcode)) {
+                    console.log('🔥 ZONE DETECTION - Found zone:', zone);
+                    return zone;
+                }
+            }
+            
+            console.log('🔥 ZONE DETECTION - No zone found for postcode:', postcode);
+            return null;
+        }
+
+        function testAddress() {
+            const address = document.getElementById('address').value;
+            const postcodeMatch = address.match(/\b(\d{4})\b/);
+            const postcode = postcodeMatch ? postcodeMatch[1] : null;
+            
+            console.log('Testing address:', address);
+            console.log('Extracted postcode:', postcode);
+            
+            const zone = detectZone(postcode);
+            
+            const resultDiv = document.getElementById('result');
+            if (zone) {
+                resultDiv.innerHTML = `
+                    <div style="background: #e3f2fd; color: #1976d2; padding: 12px; border-radius: 4px; margin-top: 10px;">
+                        <strong>Zone Detected:</strong> ${zone.charAt(0).toUpperCase() + zone.slice(1)} zone<br>
+                        <strong>Postcode:</strong> ${postcode}
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div style="background: #ffebee; color: #c62828; padding: 12px; border-radius: 4px; margin-top: 10px;">
+                        No zone found for postcode: ${postcode || 'not extracted'}
+                    </div>
+                `;
+            }
+        }
+    </script>
+</head>
+<body style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto;">
+    <h1>Zone Detection Test</h1>
+    <p>Enter an address to test zone detection:</p>
+    
+    <input type="text" id="address" value="123 George Street, Sydney NSW 2000" style="width: 100%; padding: 10px; font-size: 16px;">
+    <button onclick="testAddress()" style="padding: 10px 20px; margin-top: 10px; font-size: 16px;">Test Zone Detection</button>
+    
+    <div id="result"></div>
+    
+    <h2>Test Cases:</h2>
+    <ul>
+        <li><a href="#" onclick="document.getElementById('address').value='123 George Street, Sydney NSW 2000'; testAddress(); return false;">123 George Street, Sydney NSW 2000 (Eastern)</a></li>
+        <li><a href="#" onclick="document.getElementById('address').value='456 Parramatta Road, Sydney NSW 2150'; testAddress(); return false;">456 Parramatta Road, Sydney NSW 2150 (Western)</a></li>
+        <li><a href="#" onclick="document.getElementById('address').value='789 Pacific Highway, Sydney NSW 2060'; testAddress(); return false;">789 Pacific Highway, Sydney NSW 2060 (Northern)</a></li>
+        <li><a href="#" onclick="document.getElementById('address').value='321 Princes Highway, Sydney NSW 2232'; testAddress(); return false;">321 Princes Highway, Sydney NSW 2232 (Southern)</a></li>
+    </ul>
+    
+    <p style="margin-top: 20px; color: #666;">Open the browser console (F12) to see detailed logs.</p>
+</body>
+</html>
