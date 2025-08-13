@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { loadGoogleMaps } from './googleMapsService';
+import { loadGoogleMaps } from '../services/googleMapsService';
 
 // Zone boundaries for Sydney regions - covering entire metro area without gaps
 const ZONE_BOUNDARIES = {

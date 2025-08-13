@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getTwoPersonDeliveryDays } from './postcodeService';
+import { getTwoPersonDeliveryDays } from '../services/postcodeService';
 
 function TwoPersonOption({ isSelected, onChange, disabled, stairsInfo, strengthInfo, deliveryInfo }) {
   // Recommend 2-person if: (1 flight or more stairs) AND (strength level C, D, or E)

@@ -9,10 +9,10 @@ import TwoPersonOption from './TwoPersonOption';
 import DeliveryAvailability from './DeliveryAvailability';
 import PricingDisplay from './PricingDisplay';
 import DeliveryMap from './DeliveryMap';
-import { calculateDistanceFromCity, detectCity, CITY_ORIGINS } from './googleMapsService';
-import { calculateDeliveryFee } from './priceCalculator';
-import { loadCorridors, extractPostcode, isCorridorPostcode, getPostcodeZone } from './postcodeService';
-import { detectZoneIntelligently } from './zoneDetectionService';
+import { calculateDistance, extractStateFromAddress } from '../services/googleMapsService';
+import { calculateDeliveryFee } from '../services/priceCalculator';
+import { loadCorridors, extractPostcode, isCorridorPostcode, getPostcodeZone } from '../services/postcodeService';
+import { detectZoneIntelligently } from '../services/zoneDetectionService';
 
 function DeliveryCalculator() {
   const [address, setAddress] = useState('');

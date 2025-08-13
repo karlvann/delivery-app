@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { extractPostcode, getTwoPersonDeliveryDays } from './postcodeService';
-import { getZoneForPostcode } from './zoneService';
+import { extractPostcode, getTwoPersonDeliveryDays } from '../services/postcodeService';
+import { getZoneForPostcode } from '../services/zoneService';
 import { getMelbourneZoneForPostcode, getMelbourneDeliveryDays, getMelbourneDeliveryInfo } from './melbourneDeliveryService.js';
 import { getShepherdsDeliverySchedule, getNextShepherdsDelivery } from './shepherdsDeliveryService.js';
 

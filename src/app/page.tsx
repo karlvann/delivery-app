@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
 
 // Dynamically import to avoid SSR issues with Google Maps
-const SinglePageDeliveryForm = dynamic(
-  () => import('./components/SinglePageDeliveryForm'),
+const DeliveryCalculatorLean = dynamic(
+  () => import('./components/DeliveryCalculatorLean'),
   { 
     ssr: false,
     loading: () => (
@@ -26,7 +26,7 @@ export default function Home() {
         <p>Loading...</p>
       </div>
     }>
-      <SinglePageDeliveryForm />
+      <DeliveryCalculatorLean />
     </Suspense>
   )
 }

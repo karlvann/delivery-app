@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { loadGoogleMaps } from './googleMapsService';
+import { loadGoogleMaps } from '../services/googleMapsService';
 
 function ZoneMapEditor({ onZoneUpdate }) {
   const mapRef = useRef(null);

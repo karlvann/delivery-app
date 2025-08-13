@@ -2,7 +2,7 @@
 // Use environment variable for API key (falls back to empty string if not set)
 // In browser context, we need to check if we're on the client side
 export const GOOGLE_API_KEY = typeof window !== 'undefined' 
-  ? (window.env?.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'AIzaSyCAn-JvV4sTaGP5P4zFb0PlzFYOinzH1A8')
+  ? (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'AIzaSyCAn-JvV4sTaGP5P4zFb0PlzFYOinzH1A8')
   : 'AIzaSyCAn-JvV4sTaGP5P4zFb0PlzFYOinzH1A8';
 
 // Multi-city origin points

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { getPostcodeZone } from './postcodeService';
-import { detectZoneIntelligently } from './zoneDetectionService';
+import { getPostcodeZone } from '../services/postcodeService';
+import { detectZoneIntelligently } from '../services/zoneDetectionService';
 
 function ZoneChecker() {
   const [postcode, setPostcode] = useState('');

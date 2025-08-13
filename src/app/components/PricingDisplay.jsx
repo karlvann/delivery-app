@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatCurrency } from './priceCalculator';
+import { formatCurrency } from '../services/priceCalculator';
 
 function PricingDisplay({ deliveryInfo, loading, includeTwoPerson, selectedDay }) {
   if (loading) {

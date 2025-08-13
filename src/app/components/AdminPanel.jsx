@@ -5,9 +5,9 @@ import {
   addPostcode, 
   removePostcode,
   loadCorridors
-} from './postcodeService';
-import { shouldUseIntelligentDetection, setIntelligentDetection, getSuburbsForZone } from './zoneDetectionService';
-import { getZoneForSuburb } from './zoneService';
+} from '../services/postcodeService';
+import { shouldUseIntelligentDetection, setIntelligentDetection, getSuburbsForZone } from '../services/zoneDetectionService';
+import { getZoneForSuburb } from '../services/zoneService';
 import SydneyZoneMap from './SydneyZoneMap';
 import ZoneChecker from './ZoneChecker';
 

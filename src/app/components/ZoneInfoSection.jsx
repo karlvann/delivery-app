@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { getSuburbsForZone } from './zoneDetectionService';
+import { getSuburbsForZone } from '../services/zoneDetectionService';
 
 const ZONE_INFO = {
   eastern: {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { extractPostcode, getPostcodeZone } from './postcodeService';
+import { extractPostcode, getPostcodeZone } from '../services/postcodeService';
 
 function DeliveryDaySelector({ selectedDay, onDayChange, includeTwoPerson, customerAddress }) {
   const [zone, setZone] = useState(null);

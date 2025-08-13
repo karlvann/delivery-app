@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { createDeliveryMap } from './googleMapsService';
+import { createDeliveryMap } from '../services/googleMapsService';
 
 function DeliveryMap({ customerAddress }) {
   const mapRef = useRef(null);

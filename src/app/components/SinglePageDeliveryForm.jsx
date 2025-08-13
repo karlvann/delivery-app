@@ -1,11 +1,11 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
-import { calculateDeliveryFee as calculateFee } from './priceCalculator';
-import { calculateDistanceFromCity, detectCity, loadGoogleMaps, CITY_ORIGINS } from './googleMapsService';
-import { extractPostcode, isCorridorPostcode } from './postcodeService';
-import { getZoneForPostcode, getZoneForSuburb } from './zoneService';
-// import { getRecommendedDays } from './shepherdsDeliveryService';
-// import { calculateMelbourneDelivery } from './melbourneDeliveryService';
+import { calculateDeliveryFee as calculateFee } from '../services/priceCalculator';
+import { calculateDistanceFromCity, detectCity, loadGoogleMaps, CITY_ORIGINS } from '../services/googleMapsService';
+import { extractPostcode, isCorridorPostcode } from '../services/postcodeService';
+import { getZoneForPostcode, getZoneForSuburb } from '../services/zoneService';
+// import { getRecommendedDays } from '../services/shepherdsDeliveryService';
+// import { calculateMelbourneDelivery } from '../services/melbourneDeliveryService';
 import { MapPin, Truck, Calendar, Users, Package, DollarSign, AlertCircle, ChevronRight, Home, Navigation, Settings } from 'lucide-react';
 import Link from 'next/link';
 

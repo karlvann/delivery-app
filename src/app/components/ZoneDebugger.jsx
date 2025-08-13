@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { extractPostcode, getPostcodeZone } from './postcodeService';
+import { extractPostcode, getPostcodeZone } from '../services/postcodeService';
 
 function ZoneDebugger({ address }) {
   const [debugInfo, setDebugInfo] = useState({});

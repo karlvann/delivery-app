@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { initializeAutocomplete } from './googleMapsService';
+import { initializeAutocomplete } from '../services/googleMapsService';
 
 function AddressInput({ onAddressChange, value, onChange, error, placeholder = "Enter your delivery address", autoFocus = false, minimal = false }) {
   const inputRef = useRef(null);
