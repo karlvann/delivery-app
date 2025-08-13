@@ -139,6 +139,38 @@ export function detectCity(address) {
   return 'sydney';
 }
 
+export function extractStateFromAddress(address) {
+  const upperAddress = address.toUpperCase();
+  
+  if (upperAddress.includes('QLD') || upperAddress.includes('QUEENSLAND')) {
+    return 'QLD';
+  }
+  if (upperAddress.includes('VIC') || upperAddress.includes('VICTORIA')) {
+    return 'VIC';
+  }
+  if (upperAddress.includes('ACT') || upperAddress.includes('CANBERRA')) {
+    return 'ACT';
+  }
+  if (upperAddress.includes('NSW') || upperAddress.includes('NEW SOUTH WALES')) {
+    return 'NSW';
+  }
+  if (upperAddress.includes('SA') || upperAddress.includes('SOUTH AUSTRALIA')) {
+    return 'SA';
+  }
+  if (upperAddress.includes('WA') || upperAddress.includes('WESTERN AUSTRALIA')) {
+    return 'WA';
+  }
+  if (upperAddress.includes('TAS') || upperAddress.includes('TASMANIA')) {
+    return 'TAS';
+  }
+  if (upperAddress.includes('NT') || upperAddress.includes('NORTHERN TERRITORY')) {
+    return 'NT';
+  }
+  
+  // Default to NSW if nothing matches
+  return 'NSW';
+}
+
 /**
  * Initialize Google Places Autocomplete for address input
  * @param {HTMLInputElement} inputElement - Input element to attach autocomplete

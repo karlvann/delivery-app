@@ -91,7 +91,8 @@ function DeliveryCalculatorLean() {
               <h2 className="text-lg font-semibold mb-3">Delivery Address</h2>
               <AddressInput
                 value={delivery.address}
-                onChange={handleAddressChange}
+                onChange={(value) => updateDelivery({ address: value })}
+                onAddressChange={handleAddressChange}
                 placeholder="Enter delivery address..."
               />
             </div>

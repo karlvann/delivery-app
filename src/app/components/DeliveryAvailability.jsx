@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { extractPostcode, getTwoPersonDeliveryDays } from '../services/postcodeService';
 import { getZoneForPostcode } from '../services/zoneService';
-import { getMelbourneZoneForPostcode, getMelbourneDeliveryDays, getMelbourneDeliveryInfo } from './melbourneDeliveryService.js';
-import { getShepherdsDeliverySchedule, getNextShepherdsDelivery } from './shepherdsDeliveryService.js';
+import { getMelbourneZoneForPostcode, getMelbourneDeliveryDays, getMelbourneDeliveryInfo } from '../services/melbourneDeliveryService.js';
+import { getShepherdsDeliverySchedule, getNextShepherdsDelivery } from '../services/shepherdsDeliveryService.js';
 
 function DeliveryAvailability({ customerAddress, onDaySelected, requiresTwoPerson, isSydney, isMelbourne }) {
   const [availabilityInfo, setAvailabilityInfo] = useState(null);
